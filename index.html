@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Консультация @bazhenova_fit — Татьяна Баженова (фитнес-тренер)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F2EC;
+    --panel:#FFFFFF;
+    --ink:#2B2230;
+    --ink-soft:#665A6E;
+    --line:#E6DCD1;
+    --line-soft:#EFE7DE;
+
+    --b1:#6B4E71; --b1-bg:#F4EEF4;
+    --b2:#B5697A; --b2-bg:#F7EDEF;
+    --b3:#B4832F; --b3-bg:#F8F0E1;
+    --b4:#3F6D6B; --b4-bg:#EBF2F1;
+    --b5:#B0603F; --b5-bg:#F7EBE4;
+    --b6:#5E8763; --b6-bg:#EEF3EC;
+    --b7:#4C5B8C; --b7-bg:#EDEFF6;
+    --b8:#7C5535; --b8-bg:#F3EBE2;
+    --b9:#8C5A7C; --b9-bg:#F6EEF3;
+    --b10:#3F6D6B; --b10-bg:#EBF2F1;
+    --b11:#6B4E71; --b11-bg:#F4EEF4;
+    --b12:#B5697A; --b12-bg:#F7EDEF;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,sans-serif;
+    line-height:1.55;
+    padding:40px 24px 120px;
+  }
+
+  .wrap{max-width:880px;margin:0 auto;}
+
+  header.top{
+    margin-bottom:44px;
+    padding-bottom:28px;
+    border-bottom:1px solid var(--line);
+  }
+  header.top .eyebrow{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:16px;
+    color:var(--ink-soft);
+    margin:0 0 6px;
+  }
+  header.top h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:40px;
+    line-height:1.1;
+    margin:0 0 10px;
+    letter-spacing:-0.01em;
+  }
+  header.top p.sub{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width:520px;
+  }
+  .controls{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+  }
+  .controls button{
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    font-weight:600;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--ink-soft);
+    padding:8px 14px;
+    border-radius:100px;
+    cursor:pointer;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .controls button:hover{border-color:var(--ink-soft); color:var(--ink);}
+
+  /* --- spine / blocks --- */
+  .spine{position:relative;}
+  .spine::before{
+    content:"";
+    position:absolute;
+    left:19px; top:10px; bottom:10px;
+    width:2px;
+    background:var(--line);
+  }
+
+  .block{position:relative; margin-bottom:14px; padding-left:52px;}
+
+  .node{
+    position:absolute;
+    left:0; top:2px;
+    width:40px; height:40px;
+    border-radius:50%;
+    background:var(--panel);
+    border:2px solid var(--c);
+    color:var(--c);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:16px;
+    z-index:2;
+  }
+
+  .block-header{
+    width:100%;
+    text-align:left;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-left:4px solid var(--c);
+    border-radius:12px;
+    padding:14px 18px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .block-header h2{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:19px;
+    margin:0;
+    color:var(--ink);
+  }
+  .block-header .hint{
+    font-size:12px;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .block-header .arrow{
+    width:22px; height:22px;
+    flex:0 0 auto;
+    color:var(--c);
+    transition:transform .2s ease;
+  }
+  .block.open .block-header .arrow{transform:rotate(90deg);}
+  .block.open .block-header{border-bottom-left-radius:0; border-bottom-right-radius:0;}
+
+  .block-body{
+    display:none;
+    background:var(--tint);
+    border:1px solid var(--line);
+    border-top:none;
+    border-left:4px solid var(--c);
+    border-radius:0 0 12px 12px;
+    padding:22px 22px 26px;
+  }
+  .block.open .block-body{display:block;}
+
+  /* --- sub sections (2nd level toggle) --- */
+  .sub{margin-bottom:14px;}
+  .sub:last-child{margin-bottom:0;}
+  .sub-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    padding:6px 0;
+  }
+  .sub-head .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--c);
+    flex:0 0 auto;
+  }
+  .sub-head h3{
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:14.5px;
+    margin:0;
+    color:var(--ink);
+  }
+  .sub-head .mini-arrow{
+    margin-left:auto;
+    font-size:12px;
+    color:var(--ink-soft);
+    transition:transform .2s ease;
+  }
+  .sub.open .mini-arrow{transform:rotate(90deg);}
+  .sub-content{
+    display:none;
+    padding:10px 4px 4px 18px;
+    border-left:2px solid var(--line-soft);
+    margin-left:3px;
+    font-size:14.5px;
+    color:var(--ink);
+  }
+  .sub.open .sub-content{display:block;}
+
+  .sub-content ul{margin:6px 0; padding-left:20px;}
+  .sub-content li{margin:5px 0;}
+  .sub-content p{margin:8px 0;}
+
+  blockquote{
+    margin:10px 0;
+    padding:10px 14px;
+    background:rgba(255,255,255,.6);
+    border-left:3px solid var(--c);
+    border-radius:0 8px 8px 0;
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:14.5px;
+    color:var(--ink);
+  }
+
+  .diagram{
+    background:#20202A;
+    color:#E9E4DA;
+    font-family:'SF Mono',Consolas,monospace;
+    font-size:11.5px;
+    line-height:1.5;
+    padding:16px 18px;
+    border-radius:10px;
+    overflow-x:auto;
+    white-space:pre;
+    margin:8px 0;
+  }
+
+  .checklist{list-style:none; margin:6px 0; padding:0;}
+  .checklist li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    margin:7px 0;
+    cursor:pointer;
+    font-size:14.5px;
+  }
+  .checklist li .box{
+    width:16px;height:16px;
+    border:1.5px solid var(--ink-soft);
+    border-radius:4px;
+    flex:0 0 auto;
+    margin-top:2px;
+    position:relative;
+  }
+  .checklist li.checked .box{background:var(--c); border-color:var(--c);}
+  .checklist li.checked .box::after{
+    content:"";
+    position:absolute; left:4px; top:1px;
+    width:4px; height:8px;
+    border:solid white;
+    border-width:0 2px 2px 0;
+    transform:rotate(45deg);
+  }
+  .checklist li.checked span.label{color:var(--ink-soft); text-decoration:line-through;}
+
+  .note{
+    font-size:13px;
+    color:var(--ink-soft);
+    background:rgba(255,255,255,.5);
+    border-radius:8px;
+    padding:8px 12px;
+    margin:8px 0;
+  }
+  .warn{
+    font-size:13.5px;
+    background:#FBEFE4;
+    border:1px solid #E9CFAF;
+    color:#7A4A17;
+    border-radius:8px;
+    padding:9px 12px;
+    margin:8px 0;
+  }
+
+  footer{
+    max-width:880px;
+    margin:50px auto 0;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:12.5px;
+  }
+
+  @media(max-width:600px){
+    header.top h1{font-size:30px;}
+    .block{padding-left:44px;}
+    .node{width:34px;height:34px;font-size:14px;}
+  }
+
+  .block-body > ul, .block-body > ol{margin:6px 0; padding-left:20px; font-size:14.5px;}
+  .block-body > ul li, .block-body > ol li{margin:5px 0;}
+  .block-body > p{margin:8px 0; font-size:14.5px;}
+  .tbl-wrap{overflow-x:auto; margin:10px 0;}
+  table{width:100%; border-collapse:collapse; background:var(--panel); border-radius:10px; overflow:hidden; font-size:14px;}
+  th, td{border:1px solid var(--line); padding:9px 12px; text-align:left; vertical-align:top;}
+  th{background:var(--line-soft); font-weight:700;}
+  td:first-child{font-weight:600; width:32%;}
+  @media(max-width:600px){ .diagram{font-size:10px;} }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>Консультация @bazhenova_fit — Татьяна Баженова (фитнес-тренер)</h1>
+    <div class="controls">
+      <button id="expandAll">Развернуть всё</button>
+      <button id="collapseAll">Свернуть всё</button>
+    </div>
+  </header>
+
+  <div class="spine" id="spine">
+
+    <!-- BLOCK 1 -->
+    <div class="block" data-c="1">
+      <div class="node">1</div>
+      <button class="block-header">
+        <h2>Общая картина</h2>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="block-body">
+        <ul>
+          <li><strong>Главное:</strong> у тебя огромный офлайн-опыт: 25+ лет в ЗОЖ, 8 лет тренерской практики, 40+ человек через тебя за неполный год, около 20 постоянных клиентов, которые не уходят, 24 отзыва. Нужно просто все это перевести в онлайн.</li>
+          <li><strong>По сути ты уже частично работаешь в онлайн:</strong> составляешь программы, контролируешь питание части клиентов, а один из клиентов прямо пишет в отзыве, что индивидуальные тренировки ты присылаешь онлайн. Осталось упаковать это в понятный продукт!</li>
+          <li><strong>Юмор-рилсы дали охват, но не клиентов.</strong> 330 тыс. просмотров и +46 подписчиков за месяц показывают, что внимание ты удерживать умеешь. Но в этих роликах нет следующего шага: человек посмеялся и ушёл. Формат выбрасывать не нужно, нужно поменять смысл и добавить путь дальше.</li>
+          <li><strong>Сейчас у тебя нет системы</strong>, в которой человек видит тебя → понимает, чем ты можешь помочь именно ему → делает понятный шаг → попадает к тебе лично.</li>
+          <li><strong>Клуб по подписке — хорошая цель, но это не первый этап точно.</strong> Сначала онлайн-ведение и первые 5–10 клиентов. Тогда ты поймёшь, какие вопросы повторяются, какие материалы нужны всем и что можно стандартизировать. Из этого потом и соберётся клуб.</li>
+          <li><strong>Твоя сильная сторона в продажах — личный контакт.</strong> Целевые люди, которые с тобой пообщались, покупают легко. Поэтому вся воронка строится так, чтобы как можно быстрее дать человеку попробовать работу с тобой лично.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- BLOCK 2 -->
+    <div class="block" data-c="2">
+      <div class="node">2</div>
+      <button class="block-header">
+        <h2>Позиционирование и образ</h2>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="block-body">
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Кто твоя ЦА</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <p>Женщина 30+, которая замечает, что тело меняется: сложнее держать вес, появилась сутулость, устаёт спина, меньше энергии, тело стало «рыхлым». Она не понимает, как этому противодействовать, и не хочет жить на диетах. Часто у неё уже есть абонемент в зал, но она не понимает, что там делать, или годами ходит без результата.</p>
+            <p>Её слова (это твои реальные запросы от клиенток):</p>
+            <blockquote>«Хочу избавиться от болей в спине», «у меня сутулая спина», «хочу, чтобы плечи расправились», «хочу больше энергии», «хочу похудеть».</blockquote>
+            <p>И то, что пишут твои клиентки в отзывах:</p>
+            <blockquote>«до этого я 3 года ходила в зал и ситуация не менялась», «десятки попыток взять своё тело под контроль не увенчивались успехом», «Таня — мой 4-й персональный тренер с 2017 года».</blockquote>
+            <p>Я бы не позиционировала тебя как «тренера по похудению»: это огромная конкуренция. И не только как «тренера по осанке»: это слишком узко. Твоя территория шире: <strong>тело и образ жизни женщины 30+ на длинной дистанции.</strong></p>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Варианты формулировок позиционирования</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <ol>
+              <li>«Помогаю женщинам 30+ вернуть подтянутое, сильное тело и ровную спину без жёстких диет и через образ жизни, который остаётся с вами»</li>
+              <li>«Мне 50, и я так выгляжу не потому, что повезло, а потому что это мой образ жизни 25+ лет. Помогаю женщинам 30+ выстроить такой же»</li>
+              <li>«Если ты ходишь в зал, а тело не меняется, помогу выстроить систему: тренировки, питание, техника»</li>
+              <li>«Не марафоны на −10 кг, а тело, которое ты сохраняешь годами без откатов назад»</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Главная идея</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <p>Ты не продаёшь «тело к лету». Ты <strong>прививаешь образ жизни</strong>, и ты сама его живое доказательство: в 50 лет ты в соревновательной форме, всю жизнь в одном весе, готовишься к выступлению в фитнес-эстетическом.</p>
+            <blockquote>Фраза-манифест, вариант: «Я не обещаю золотых гор и быстрых результатов. Я учу жить так, чтобы хорошая форма была для вас нормой, а не временным явлением»</blockquote>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Образ</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <p>Вместо «строгий тренер» я бы выбрала одно из:</p>
+            <ul>
+              <li><strong>внимательный и требовательный</strong>: замечает детали, но и ждёт вклада от клиента;</li>
+              <li><strong>честный</strong>: не сюсюкается и не обещает чудес;</li>
+              <li><strong>последовательный</strong>: результат через систему, а не через рывки;</li>
+              <li><strong>вдумчивый</strong>: объясняет каждое «зачем».</li>
+            </ul>
+            <p>Твои клиенты сами описывают тебя именно так: «не давит, но и расслабляться не даёт”, «общаться легко, но халтурить не получится», «очень приятный человек, но на тренировках не даёт спуску». Эти формулировки можно брать прямо в упаковку.</p>
+            <p>Суть образа: <strong>внимание + честность + объяснение.</strong> Ты не «давай, красотка, ещё 10 раз», а «вот зачем мы делаем это упражнение и почему тебе сейчас нужна именно такая нагрузка».</p>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Отстройка через отбор клиентов</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <p>Это можно и нужно говорить открыто:</p>
+            <ul>
+              <li>ты работаешь с теми, кто <strong>принял решение</strong> быть здоровым, подтянутым и красивым, и готов для этого делать свою часть;</li>
+              <li>ты не жилетка и не будешь уговаривать, но всегда поддержишь и объяснишь;</li>
+              <li>волшебной таблетки и «−10 кг за месяц» не будет.</li>
+            </ul>
+            <p>Такой отбор сильно притягивает нужных людей, которые ищут именно такого тренера. Заодно он отсекает тех, кого ты сама не хочешь брать.</p>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Твоя квалификация (как позиционировать себя)</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <ul>
+              <li>25+ лет в ЗОЖ, 8 лет тренерской практики, 9 лет балетной школы, работа с позвоночником, осанкой и суставами (есть сертификаты), старший тренер DDX Сокольники, действующая спортсменка Федерации бодибилдинга.</li>
+            </ul>
+            <div class="warn">⚠️ Не называть себя нутрициологом: диплома нет. Формулировка «составляю питание под задачу: похудение, поддержание, набор» полностью честная и рабочая, в таком виде можно оставить.</div>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>DDX и личный проект</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <ul>
+              <li>DDX используем как подтверждение реальной практики («старший тренер DDX Сокольники»).</li>
+              <li>Всё, что про онлайн, снимаем <strong>без формы клуба и от своего лица</strong> (соблюдаем регламент DDX)</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BLOCK 3 -->
+    <div class="block" data-c="3">
+      <div class="node">3</div>
+      <button class="block-header">
+        <h2>Продукт и цена</h2>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="block-body">
+
+        <p class="note">Сейчас консультация за 7 000 ₽ и ведение за 15 000 ₽ существуют только на бумаге. Их никто не покупал, формат взят у коллеги. Поэтому пересобираем продукт под тебя и твой реальный опыт.</p>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Основной продукт — онлайн-ведение, 15 000 ₽ в месяц</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <p>Человек тренируется сам, в своём зале, по твоей программе, а ты ведёшь его каждый день:</p>
+            <ul>
+              <li><strong>старт:</strong> анкета, цели, ограничения по здоровью + консультация по питанию (в подарок, отдельно она стоит 7 000 ₽) (?)</li>
+              <li><strong>индивидуальная программа тренировок</strong> под цель и особенности тела</li>
+              <li><strong>проверка техники:</strong> человек снимает упражнения на видео, ты разбираешь и даёшь обратную связь</li>
+              <li><strong>ежедневный контроль питания:</strong> фото тарелок + скрины из фэтсикрет, ты смотришь и корректируешь</li>
+              <li><strong>корректировки:</strong> раз в неделю смотришь динамику и правишь программу и питание;</li>
+              <li><strong>контрольные замеры и фото</strong> раз в 2–4 недели, чтобы видеть прогресс.</li>
+            </ul>
+            <p>Именно этот формат <strong>масштабируется:</strong> он не требует твоего присутствия в зале, и ты можешь вести людей из любого города.</p>
+            <div class="warn">⚠️ <strong>Посчитай своё время.</strong> По твоим словам, на полное ведение уходит до 30 минут в день на человека. 10 клиентов × 30 минут = 5 часов в день, а у тебя на онлайн 3 часа. Поэтому сразу договариваемся о рамках:</div>
+            <ul>
+              <li>видео техники — в определённые дни (например, 2 раза в неделю), а не каждый день</li>
+              <li>на тарелки и вопросы отвечаешь в определённые часы, а не 24/7</li>
+              <li>на первых 5 клиентах замеряешь реальное время и уже по факту решаешь, сколько человек можешь вести</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Дополнительные форматы (не продвигаем, но они есть)</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <ul>
+              <li><strong>Живые онлайн-тренировки по видеосвязи</strong> — для тех, кто из других городов и хочет заниматься с тобой в реальном времени. По цене офлайн-тренировки. Акцент на них не делаем: они занимают столько же твоего времени, сколько зал.</li>
+              <li><strong>Офлайн в Сокольниках</strong> — твои пакеты как есть.</li>
+              <li><strong>Консультация по питанию отдельно, 7 000 ₽</strong> — для тех, кому нужно только питание без тренировок. В ведении она идёт в подарок.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Вход в ведение — пробная неделя, 3 900 ₽ (?)</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <p>Вместо пробной тренировки даём человеку <strong>пожить неделю в формате ведения</strong>, чтобы он на себе почувствовал подход:</p>
+            <ul>
+              <li><strong>День 1:</strong> короткая анкета и цель, базовые рекомендации по питанию, одна тренировка с базовыми упражнениями.</li>
+              <li><strong>Дни 1–7:</strong> человек каждый день присылает тарелки, ты даёшь обратную связь.</li>
+              <li><strong>Одна тренировка на видео:</strong> человек снимает технику, ты разбираешь.</li>
+              <li><strong>День 7:</strong> голосовой итог недели — что увидела, что стоит менять, как бы ты выстроила его путь дальше. И предложение месяца ведения.</li>
+            </ul>
+            <p><strong>Почему 3 900 ₽:</strong></p>
+            <ul>
+              <li>месяц ведения стоит 15 000 ₽, это около 500 ₽ в день. Неделю делаем менее выгодной, чем месяц, но таким образом даем возможность “попробовать” — предлагаю — 3 900 ₽</li>
+              <li>по твоему времени неделя — это примерно 1,5 часа: старт, ежедневные тарелки, один разбор техники, итоговый голосовой;</li>
+              <li>платность отсекает халяву. Твой опыт со Smart Start показывает, что бесплатное приводит много людей «просто посмотреть» и 1–2 покупки из 10.</li>
+            </ul>
+            <p><strong>Стоимость недели засчитывается в месяц.</strong> Понравилось — доплачиваешь 11 100 ₽ и продолжаем без паузы. Это снимает страх «а вдруг не подойдёт» и делает переход в ведение очень естественным.</p>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Итоговая линейка</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <blockquote>Бесплатный мини-разбор (лид-магнит) → пробная неделя за 3 900 ₽ → онлайн-ведение за 15 000 ₽ в месяц (неделя засчитывается, консультация по питанию в подарок) → продление → в будущем клуб по подписке</blockquote>
+            <p><strong>Цены не финальные.</strong> Проверяем их на первых 5–10 клиентах, считаем реальные трудозатраты, собираем отзывы и только потом поднимаем.</p>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Первое, что нужно сделать: прописать продукт и оффер</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <p>Прежде чем продавать, нужно полностью описать ведение: что это за продукт, что входит, как выглядит обратная связь каждый день, какие правила, кому подходит и кому нет, какой результат человек может ожидать (по-чесноку, без обещаний «−10 кг»), и какой главный оффер.</p>
+            <p>Как это сделать: посмотреть урок Миши Тимочко про создание продукта и оффера (сейчас идёт его челлендж “сезон озоты”) и по этой структуре собрать описание вместе с нейросетью. Отдельно так же описать пробную неделю.</p>
+            <p>Если захочешь, я могу сделать это за тебя в рамках воронки под ключ.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BLOCK 4 -->
+    <div class="block" data-c="4">
+      <div class="node">4</div>
+      <button class="block-header">
+        <h2>Где взять первых онлайн-клиентов</h2>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="block-body">
+        <p>Автоворонка сама по себе в первые недели клиентов не приведёт. <strong>Первые продажи будут ручными</strong>, и это нормально.</p>
+        <p><strong>Приоритет №1 — бывшие клиенты</strong>, которые перестали ходить из-за денег, переезда, болезни или отпуска:</p>
+        <ul>
+          <li>поднять все старые контакты;</li>
+          <li>написать каждому лично с предложением <strong>пробной недели</strong> онлайн;</li>
+          <li>для тех, кто ушёл из-за денег, это особенно выгодно: месяц онлайн-ведения стоит 15 000 ₽, а 8 тренировок в зале — 28 000 ₽;</li>
+          <li>для первых клиентов можно сделать специальные условия в обмен на отзыв и обратную связь по формату.</li>
+        </ul>
+        <p>Что это даёт: первых людей в онлайне, тест формата на тех, кто тебя уже знает и доверяет, и первые онлайн-отзывы.</p>
+        <p><strong>Текущим офлайн-клиентам онлайн не предлагаем.</strong> Им удобно ходить в зал, и переводить их нет смысла.</p>
+        <p><strong>Дальше:</strong> сарафан (попросить текущих клиентов рекомендовать тебя знакомым из других городов), подписчики, которые уже реагируют на контент, и лид-магнит. Можно предложить процент за рекомендацию.</p>
+      </div>
+    </div>
+
+    <!-- BLOCK 5 -->
+    <div class="block" data-c="5">
+      <div class="node">5</div>
+      <button class="block-header">
+        <h2>Лид-магниты и воронка</h2>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="block-body">
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Какой лид-магнит нужен</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <p>Цель у нас одна: <strong>довести человека до личного общения с тобой и до пробной недели.</strong> Поэтому лучше всего работает не пдф файлики с упражнениями, а лид-магнит, где ты раскрываешь экспертность лично. Старый «утренний комплекс от отёков» решает маленькую локальную задачу, и после него человеку незачем идти дальше.</p>
+            <p><strong>Вариант 1 (основной) — бесплатный мини-разбор</strong></p>
+            <ul>
+              <li>Человек заполняет короткую анкету: возраст, рост, вес, цель, чем питается в обычный день, какая активность, есть ли зал, есть ли ограничения по здоровью.</li>
+              <li>Ты отвечаешь голосовым на 3–5 минут: что видишь, и что ей нужно делать в ближайшие полгода–год по этапам. Без конкретных упражнений, а в формате «сначала поработать вот с этим, потом вот с этим».</li>
+              <li>В конце: «Хочешь попробовать поработать так со мной? Есть пробная неделя».</li>
+            </ul>
+            <p>Этот лид-магнит повторяет твой метод «сначала диагностика, потом цель». Человек за 5 минут чувствует, как ты работаешь.</p>
+            <p><strong>Вариант 2 — «Тренируешься сама, а результата нет?»</strong></p>
+            <ul>
+              <li>Человек присылает свою программу тренировок или видео, как делает упражнения.</li>
+              <li>Ты кратко даёшь обратную связь: что не так и что бы ты сделала иначе, чтобы был результат.</li>
+              <li>Здесь отлично работают твои кейсы: клиентки, которые годами ходили в зал сами или с другими тренерами без результата, а у тебя получили его. Например: «три года ходила в зал, ситуация не менялась» → у тебя ушёл жир с живота и округлились ягодицы.</li>
+              <li>Выход на пробную неделю.</li>
+            </ul>
+            <div class="warn">⚠️ <strong>Ограничивай количество разборов в неделю.</strong> У тебя около 20 часов на онлайн, поэтому ограничение мест здесь не будет враньем ради хайпа.</div>
+            <div class="warn">⚠️ Если в анкете есть серьёзные ограничения по здоровью, разбор даём в рамках своей компетенции и направляем к врачу. Это ещё и усиливает доверие.</div>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>На будущее</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <p>Когда основная воронка заработает, можно добавить:</p>
+            <ul>
+              <li><strong>Интерактивный бот-тест:</strong> человек отвечает на вопросы и сразу получает рекомендации, что ему сейчас делать. Это отдельная работа, её можно сделать в рамках воронки под ключ.</li>
+              <li><strong>Бесплатная неделя в групповом чате:</strong> программа тренировок на неделю, каждый день скидываем тарелки, ты отслеживаешь и помогаешь. Многие покупают абонемент в зал и не ходят, потому что никто не составляет план и не проверяет питание. Под такой формат можно снять много Reels, и на него откликнется много людей. Важно: это не марафон «−5 кг за неделю», а неделя с тренером, после которой хочется продолжить лично. Заодно ты протестируешь групповой формат для будущего клуба.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Кодовое слово</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <p>Одно основное слово под основной лид-магнит, например <strong>«РАЗБОР»</strong>. Используем его везде: в Reels, сторис, шапке. Разные слова под разные темы можно добавить позже, когда появится статистика.</p>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Как выглядит путь (базово)</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <p><strong>Директ Instagram:</strong></p>
+            <ul>
+              <li>автоответ по кодовому слову → ссылка на бота;</li>
+              <li>2–3 напоминания в рамках 24 часов, потому что потом Instagram не даёт писать автоматически.</li>
+            </ul>
+            <p><strong>Бот:</strong></p>
+            <ol>
+              <li>Согласие на обработку персональных данных. ⚠️ Это юридически обязательный первый шаг.</li>
+              <li>Коротко, кто ты (лучше видео-кружок на 10–15 секунд: твоё лицо вместо текста бота).</li>
+              <li>Анкета для мини-разбора.</li>
+              <li>«Анкету получила, разбор пришлю голосовым в течение N дней».</li>
+              <li>Если анкету не заполнили — прогрев: кейс → твой подход → отзывы → снова приглашение на разбор.</li>
+            </ol>
+            <p><strong>Лично:</strong></p>
+            <ol start="6">
+              <li>Голосовой разбор → приглашение на пробную неделю.</li>
+              <li>Пробная неделя → итоговый голосовой → предложение месяца ведения.</li>
+              <li>Не продлила сразу → одно-два бережных касания без давления.</li>
+            </ol>
+            <p>Пример тона для приглашения на пробную неделю:</p>
+            <blockquote>«По твоей анкете вижу, что начинать стоит не с живота, а с питания и спины. Хочешь попробовать поработать так со мной? Есть пробная неделя: даю базовую тренировку, каждый день смотрю твои тарелки, разбираю технику. Через 7 дней станет понятно, подходим ли мы друг другу»</blockquote>
+            <p class="note">Полные цепочки сообщений будут в отдельном материале.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BLOCK 6 -->
+    <div class="block" data-c="6">
+      <div class="node">6</div>
+      <button class="block-header">
+        <h2>Контент и Telegram</h2>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="block-body">
+
+        <p class="note">Тезисно, детали и идеи будут в отдельных файлах.</p>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Что сейчас не так</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <ul>
+              <li>Контент без задачи: ролик выходит, но никуда не ведёт.</li>
+              <li>Юмор стал основным форматом, и ты от него устала.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Что делаем</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <ul>
+              <li><strong>У каждого ролика есть функция:</strong> охват, экспертность, доверие или продажа.</li>
+              <li><strong>Юмор-механику оставляем, но меняем смысл.</strong> Вместо «Пиво пила?» делаем «Я тренируюсь 3 раза в неделю, а живот не уходит. Почему?». Диалог и живость остаются, внутри появляется экспертность.</li>
+              <li><strong>Показываем, а не только рассказываем.</strong> Тело — твой главный визуальный инструмент: ошибка → правильно → объяснение.</li>
+            </ul>
+            <p><strong>Пропорция-ориентир:</strong> 40% экспертный, 30% охватный, 20% личный, 10% продающий.</p>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Три серии, которые я бы запустила</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <ol>
+              <li><strong>«Мне 50, и вот что я знаю о теле»</strong>: личное и экспертное одновременно, тебе не нужно «играть». Например: «Мне 50, и я больше не верю в похудение любой ценой».</li>
+              <li><strong>«Разбор клиента»</strong>: что хотела → что я увидела → что изменили → результат.</li>
+              <li><strong>«Тренер отвечает»</strong>: вопросы из комментариев и директа. Это бесконечный источник тем.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Про личный контент</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <p>Ты говоришь, что личное получается наигранно. Не нужно «доброе утро, я встала в 6:00». Личное встраиваем в экспертное: тренируешься → рассказываешь, почему продолжаешь в 50; готовишься к соревнованиям → что происходит с питанием; сама ходишь к тренеру → почему тренеру тоже нужен тренер.</p>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="sub-head"><span class="dot"></span><h3>Telegram</h3><span class="mini-arrow">▸</span></div>
+          <div class="sub-content">
+            <ul>
+              <li>Канал нужен как место, где человек узнаёт тебя глубже, чем в Instagram.</li>
+              <li>Не нужно вести его каждый день вручную: <strong>составляешь контент-план заранее и ставишь публикации на отложку.</strong> Главное, чтобы канал был наполнен и жил.</li>
+              <li>Обязателен <strong>закреплённый пост:</strong> кто ты, чем помогаешь, ведение и пробная неделя, как записаться, ссылка на бесплатный мини-разбор.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BLOCK 7 -->
+    <div class="block" data-c="7">
+      <div class="node">7</div>
+      <button class="block-header">
+        <h2>Упаковка Instagram</h2>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="block-body">
+        <p class="note">Тезисно, варианты шапки и актуальных будут в отдельном файле.</p>
+        <ul>
+          <li>Сейчас в шапке «тренер DDX», то есть позиционирование через место, а не через результат. Шапка должна за 5 секунд отвечать на вопросы: кто ты, для кого, какой результат, что делать дальше.</li>
+          <li>Логика шапки: кто ты → для кого и какой результат → 25+ лет в ЗОЖ | 8 лет практики → кодовое слово на мини-разбор.</li>
+          <li>Актуальные: обо мне, как я работаю, результаты, отзывы, питание, спина, онлайн-ведение и пробная неделя.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- BLOCK 8 -->
+    <div class="block" data-c="8">
+      <div class="node">8</div>
+      <button class="block-header">
+        <h2>Схема воронки</h2>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="block-body">
+<div class="diagram">REELS / STORIES
+Контент про конкретную боль («Ходишь в зал, а тело не меняется? Вот 3 причины»)
+↓
+CTA: кодовое слово в директ («РАЗБОР»)
+↓
+ДИРЕКТ: автоответ → ссылка на бота → до 3 напоминаний в течение 24 часов
+↓
+БОТ: согласие на обработку ПД → видео-приветствие → анкета
+↓
+├── Заполнила анкету → ГОЛОСОВОЙ МИНИ-РАЗБОР от Татьяны
+│      ↓
+│   ПРОБНАЯ НЕДЕЛЯ — 3 900 ₽
+│   (тарелки каждый день + тренировка + разбор техники + итоговый голосовой)
+│      ↓
+│   ОНЛАЙН-ВЕДЕНИЕ — 15 000 ₽ / мес
+│   (неделя засчитывается, консультация по питанию в подарок)
+│      ↓
+│   ОТЗЫВ / КЕЙС → ПРОДЛЕНИЕ
+│
+└── Не заполнила → ПРОГРЕВ (кейс → подход → отзывы → повторное приглашение)
+       ↓
+    TELEGRAM-КАНАЛ (польза, кейсы, закреп с услугами)
+
+ПАРАЛЛЕЛЬНО: личные сообщения бывшим клиентам с предложением пробной недели
+
+ДОП. ФОРМАТЫ (не продвигаем): живые онлайн-тренировки для других городов,
+офлайн в Сокольниках, отдельная консультация по питанию
+
+В БУДУЩЕМ: бесплатная групповая неделя, интерактивный бот-тест, клуб по подписке</div>
+      </div>
+    </div>
+
+    <!-- BLOCK 9 -->
+    <div class="block" data-c="9">
+      <div class="node">9</div>
+      <button class="block-header">
+        <h2>Соцдоказательства</h2>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="block-body">
+        <p><strong>Что уже есть:</strong> 24 отзыва в DDX, кейсы клиенток и ты сама как пример.</p>
+        <p><strong>В отзывах есть готовые сильные смыслы — используй их в контенте, закрепах и боте:</strong></p>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>Смысл</th><th>Что пишут клиенты</th></tr>
+            <tr><td>Результат после других тренеров / самостоятельных тренировок</td><td>«До этого я три года ходила в зал и ситуация не менялась» (Снежана), «Таня — мой 4-й персональный тренер с 2017 года» (Мария), «десятки попыток взять тело под контроль не увенчивались успехом» (Катерина)</td></tr>
+            <tr><td>Техника</td><td>«Иногда мне кажется, что у неё встроенный транспортир и она видит малейший градус отклонения» (Татьяна)</td></tr>
+            <tr><td>Спина</td><td>«Составила программу с учётом моих проблем со спиной» (Вероника), «спасибо за помощь со спиной» (Мария)</td></tr>
+            <tr><td>Питание без срывов</td><td>«Мы вместе рассчитали норму КБЖУ, и я наконец-то перестала срываться на сладкое» (Вероника), «похудение прошло настолько плавно, что я почти не срывалась» (Мария)</td></tr>
+            <tr><td>Образ</td><td>«Не давит, но и расслабляться не даёт», «Очень приятный человек, но на тренировках не даёт спуску»</td></tr>
+          </table>
+        </div>
+        <p>Для позиционирования на женщин 30+ выбирай в первую очередь отзывы клиенток.</p>
+        <p><strong>Что сделать:</strong></p>
+        <ul>
+          <li>Сделать красивые скрины или карточки отзывов для актуальных, закрепа и бота.</li>
+          <li>Опубликовать и согласовать историю одной клиентки с фото до/после и ее историю.</li>
+          <li>Оформлять кейсы по схеме: <strong>с чем пришла → что увидели → что делали → что изменилось в жизни.</strong></li>
+        </ul>
+        <p><strong>Не ждать «−20 кг».</strong> Твои результаты про качество тела, осанку, форму и уверенность, прямо зафиксируй. Пример: клиентка 42 лет впервые в жизни начала носить лосины и шорты.</p>
+        <p><strong>После пробной недели и каждого месяца ведения собирать отзыв по вопросам:</strong></p>
+        <ol>
+          <li>С каким запросом пришла?</li>
+          <li>Что было сложнее всего?</li>
+          <li>Что изменилось в теле?</li>
+          <li>Что изменилось в самочувствии и жизни?</li>
+          <li>Кому бы порекомендовала работу со мной?</li>
+        </ol>
+        <p>Лучший формат — голосовые и видеоотзывы.</p>
+      </div>
+    </div>
+
+    <!-- CHECKLIST -->
+    <div class="block" data-c="10">
+      <div class="node">✓</div>
+      <button class="block-header">
+        <h2>Чек-лист внедрения на 2–4 недели</h2>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="block-body">
+        <p><strong>В первую очередь:</strong></p>
+        <ul class="checklist">
+          <li><span class="box"></span><span class="label">Посмотреть урок Тимочко про продукт и оффер, прописать онлайн-ведение и пробную неделю</span></li>
+          <li><span class="box"></span><span class="label">Поднять контакты бывших клиентов и лично предложить пробную неделю</span></li>
+          <li><span class="box"></span><span class="label">Провести первые пробные недели, после каждой собрать отзыв</span></li>
+          <li><span class="box"></span><span class="label">Сформировать кейс одной клиентки, чтобы скидывать как соц доказательство при необходимости</span></li>
+        </ul>
+        <p><strong>Продукт:</strong></p>
+        <ul class="checklist">
+          <li><span class="box"></span><span class="label">Описать, что входит в ведение и в пробную неделю</span></li>
+          <li><span class="box"></span><span class="label">Определить рамки обратной связи: когда отвечаешь, в какие дни смотришь видео техники</span></li>
+          <li><span class="box"></span><span class="label">Замерить время на первых клиентах и понять, сколько человек можешь вести</span></li>
+        </ul>
+        <p><strong>Лид-магнит и бот:</strong></p>
+        <ul class="checklist">
+          <li><span class="box"></span><span class="label">Кодовое слово «РАЗБОР» и анкета для мини-разбора</span></li>
+          <li><span class="box"></span><span class="label">⚠️ Подготовить «Политику конфиденциальности» и «Согласие на обработку ПД» и поставить первым шагом в боте</span></li>
+          <li><span class="box"></span><span class="label">Записать видео-кружок для приветствия</span></li>
+        </ul>
+        <p><strong>Контент и упаковка:</strong></p>
+        <ul class="checklist">
+          <li><span class="box"></span><span class="label">Обновить шапку и актуальные, выложить отзывы</span></li>
+          <li><span class="box"></span><span class="label">Запустить серию «Мне 50, и вот что я знаю о теле»</span></li>
+          <li><span class="box"></span><span class="label">В каждом ролике — понятная задача и CTA</span></li>
+          <li><span class="box"></span><span class="label">Создать Telegram-канал, закреп, контент-план на отложке</span></li>
+        </ul>
+        <p class="note"><strong>Не приоритет сейчас:</strong> клуб, групповая неделя, бот-тест, несколько лид-магнитов сразу, реклама, большой курс.</p>
+      </div>
+    </div>
+
+    <!-- BLOCK 10 -->
+    <div class="block" data-c="11">
+      <div class="node">10</div>
+      <button class="block-header">
+        <h2>Про клуб по подписке</h2>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="block-body">
+        <p>Идея сильная и хорошо ложится на тебя: всё в одном месте, питание, тренировки, комьюнити. Но запускать его без онлайн-кейсов и понимания, что реально нужно людям, рискованно.</p>
+        <p><strong>Последовательность:</strong></p>
+        <ol>
+          <li>Онлайн-ведение: 5–10 клиентов.</li>
+          <li>Замечаешь, что повторяется: вопросы, упражнения, объяснения.</li>
+          <li>Записываешь это один раз, и из этого собирается библиотека.</li>
+          <li>Тестируешь групповой формат через бесплатную неделю в чате.</li>
+          <li>Библиотека и групповой опыт становятся основой клуба.</li>
+        </ol>
+        <p>Каждое видео по технике, которое ты снимаешь для клиентов ведения, уже кирпичик будущего клуба.</p>
+      </div>
+    </div>
+
+    <!-- MATERIALS -->
+    <div class="block" data-c="12">
+      <div class="node">→</div>
+      <button class="block-header">
+        <h2>Материалы, которые пришлю после созвона</h2>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="block-body">
+        <ol>
+          <li>Упаковка Instagram: варианты шапки, закрепы, актуальные.</li>
+          <li>Анкета для мини-разбора и шаблон голосового разбора.</li>
+          <li>Идеи для Reels и контент-план на 4 недели с точками продаж.</li>
+          <li>Telegram: оформление, закреп и контент-план на первый месяц.</li>
+          <li>Структура бота и директа: базовые цепочки с примерами формулировок.</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>Консультация @bazhenova_fit — Татьяна Баженова (фитнес-тренер)</footer>
+
+<script>
+  document.querySelectorAll('.block').forEach(function(block){
+    var c = block.getAttribute('data-c');
+    block.style.setProperty('--c', 'var(--b'+c+')');
+    block.style.setProperty('--tint', 'var(--b'+c+'-bg)');
+    var header = block.querySelector('.block-header');
+    header.addEventListener('click', function(){
+      block.classList.toggle('open');
+    });
+  });
+
+  document.querySelectorAll('.sub').forEach(function(sub){
+    var head = sub.querySelector('.sub-head');
+    head.addEventListener('click', function(){
+      sub.classList.toggle('open');
+    });
+  });
+
+  document.querySelectorAll('.checklist li').forEach(function(li){
+    li.addEventListener('click', function(){
+      li.classList.toggle('checked');
+    });
+  });
+
+  document.getElementById('expandAll').addEventListener('click', function(){
+    document.querySelectorAll('.block').forEach(b=>b.classList.add('open'));
+    document.querySelectorAll('.sub').forEach(s=>s.classList.add('open'));
+  });
+  document.getElementById('collapseAll').addEventListener('click', function(){
+    document.querySelectorAll('.block').forEach(b=>b.classList.remove('open'));
+    document.querySelectorAll('.sub').forEach(s=>s.classList.remove('open'));
+  });
+</script>
+
+</body>
+</html>
